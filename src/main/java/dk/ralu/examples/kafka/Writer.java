@@ -30,14 +30,14 @@ public class Writer {
 
             String topic = "test";
             Integer partition = 0;
-            String key = "the key";
-            String value = "message content";
+            String key = RandomStringUtil.randomString(4, 'a', 'z');
+            String value = RandomStringUtil.randomString(10, 'a', 'z');
             //List<Header> headers = Arrays.asList(new RecordHeader("h1", "h1-value".getBytes("UTF-8")));
             ProducerRecord<String, String> record = new ProducerRecord<>(topic, partition, key, value/*, headers*/);
             LOGGER.info("Created record with topic [{}], partition [{}], key [{}], and value [{}]", topic, partition, key, value);
 
             Future<RecordMetadata> sendResponseFuture = kafkaProducer.send(record);
-            LOGGER.info("Send message");
+            LOGGER.info("Sending message with key [{}}, and value [{}] to topic [{}], partition [{}]", key, value, topic, partition);
 
             LOGGER.info("Message successfully sent (offset {})", sendResponseFuture.get().offset());
 
