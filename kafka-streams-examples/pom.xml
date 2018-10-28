@@ -10,13 +10,18 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kafka-core-examples</artifactId>
+  <artifactId>kafka-streams-examples</artifactId>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka-clients</artifactId>
+      <artifactId>kafka-streams</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-streams-test-utils</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
- </project>
+</project>
