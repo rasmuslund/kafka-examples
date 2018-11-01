@@ -1,6 +1,6 @@
 package dk.ralu.examples.kafka.streams;
 
-import dk.ralu.examples.kafka.streams.Name.TopicName;
+import dk.ralu.examples.kafka.streams.BasicProcessorTopology.Name.TopicName;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class BasicProcessorExampleTest {
+class BasicProcessorTopologyTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BasicProcessorExampleTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicProcessorTopologyTest.class);
     private TopologyTestDriver driver;
     private ConsumerRecordFactory<String, String> inputFactory;
 
@@ -26,12 +26,12 @@ class BasicProcessorExampleTest {
     void beforeEach() {
 
         Properties config = new Properties();
-        config.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, BasicProcessorExampleTest.class.getSimpleName());
+        config.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, BasicProcessorTopologyTest.class.getSimpleName());
         config.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "ignored.com:9091");
         config.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         config.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
-        driver = new TopologyTestDriver(TopologyBuilder.build(), config);
+        driver = new TopologyTestDriver(BasicProcessorTopology.build(), config);
 
         inputFactory = new ConsumerRecordFactory<>(new StringSerializer(), new StringSerializer());
     }

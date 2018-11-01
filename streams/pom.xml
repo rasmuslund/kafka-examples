@@ -15,6 +15,7 @@
 
   <modules>
     <module>processor-basic</module>
+    <module>processor-global-store</module>
   </modules>
 
   <dependencies>

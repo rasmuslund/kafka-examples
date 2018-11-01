@@ -1,6 +1,6 @@
 package dk.ralu.examples.kafka.streams;
 
-import dk.ralu.examples.kafka.streams.Name.NodeName;
+import dk.ralu.examples.kafka.streams.BasicProcessorTopology.Name.NodeName;
 import org.apache.kafka.streams.processor.AbstractProcessor;
 import org.apache.kafka.streams.processor.To;
 import org.slf4j.Logger;
