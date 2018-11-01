@@ -39,20 +39,20 @@ class GlobalStoreTopologyTest {
     @Test
     void test() {
 
-        inputNewMessage(TopicName.USERS, "rasmus@ralu.dk", "Rasmus Lund");
-        inputNewMessage(TopicName.USERS, "vicky@ralu.dk", "Vicky Lund");
-        inputNewMessage(TopicName.USERS, "jeppe@ralu.dk", "Jeppe Lund");
-        inputNewMessage(TopicName.USERS, "nanna@ralu.dk", "Nanna Lund");
-        inputNewMessage(TopicName.USERS, "rikke@ralu.dk", "Rikke Lund");
-        inputNewMessage(TopicName.USERS, "kalle@ralu.dk", "Kalle Lund");
+        inputNewMessage(TopicName.USERS, "rasmus@example.com", "Rasmus Lund");
+        inputNewMessage(TopicName.USERS, "vicky@example.com", "Vicky Lund");
+        inputNewMessage(TopicName.USERS, "jeppe@example.com", "Jeppe Lund");
+        inputNewMessage(TopicName.USERS, "nanna@example.com", "Nanna Lund");
+        inputNewMessage(TopicName.USERS, "rikke@example.com", "Rikke Lund");
+        inputNewMessage(TopicName.USERS, "kalle@example.com", "Kalle Lund");
 
-        inputNewMessage(TopicName.MAILS, "vicky@ralu.dk", "Hey");
-        inputNewMessage(TopicName.MAILS, "rasmus@ralu.dk", "Good day");
-        inputNewMessage(TopicName.MAILS, "rikke@ralu.dk", "How are you?");
+        inputNewMessage(TopicName.MAILS, "vicky@example.com", "Hey");
+        inputNewMessage(TopicName.MAILS, "rasmus@example.com", "Good day");
+        inputNewMessage(TopicName.MAILS, "rikke@example.com", "How are you?");
 
-        OutputVerifier.compareKeyValue(readOutputMessage(TopicName.ENRICHED_MAILS), "vicky@ralu.dk", "Hey from Vicky Lund");
-        OutputVerifier.compareKeyValue(readOutputMessage(TopicName.ENRICHED_MAILS), "rasmus@ralu.dk", "Good day from Rasmus Lund");
-        OutputVerifier.compareKeyValue(readOutputMessage(TopicName.ENRICHED_MAILS), "rikke@ralu.dk", "How are you? from Rikke Lund");
+        OutputVerifier.compareKeyValue(readOutputMessage(TopicName.ENRICHED_MAILS), "vicky@example.com", "Hey from Vicky Lund");
+        OutputVerifier.compareKeyValue(readOutputMessage(TopicName.ENRICHED_MAILS), "rasmus@example.com", "Good day from Rasmus Lund");
+        OutputVerifier.compareKeyValue(readOutputMessage(TopicName.ENRICHED_MAILS), "rikke@example.com", "How are you? from Rikke Lund");
     }
 
     private void inputNewMessage(String topicName, String key, String value) {
