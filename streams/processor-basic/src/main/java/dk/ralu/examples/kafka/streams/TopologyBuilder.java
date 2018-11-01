@@ -1,5 +1,7 @@
 package dk.ralu.examples.kafka.streams;
 
+import dk.ralu.examples.kafka.streams.Name.NodeName;
+import dk.ralu.examples.kafka.streams.Name.TopicName;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.Topology;
 import org.slf4j.Logger;

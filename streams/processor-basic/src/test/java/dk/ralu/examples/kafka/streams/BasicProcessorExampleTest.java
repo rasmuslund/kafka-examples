@@ -1,5 +1,6 @@
 package dk.ralu.examples.kafka.streams;
 
+import dk.ralu.examples.kafka.streams.Name.TopicName;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
