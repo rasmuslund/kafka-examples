@@ -16,6 +16,7 @@
   <modules>
     <module>processor-basic</module>
     <module>processor-global-store</module>
+    <module>processor-key-value-store-and-punctuate</module>
   </modules>
 
   <dependencies>
