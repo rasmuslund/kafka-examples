@@ -47,7 +47,7 @@ class KeyValueStoreAndPunctuateTopologyTest {
         inputNewMessage(TopicName.INCOMING_MAILS, "jeppe@example.com", "Message");
         inputNewMessage(TopicName.INCOMING_MAILS, "vicky@example.com", "Message");
 
-        // Makes 1st punctuate fire
+        // Makes 1st punctuate fire (fires every 5 minutes wall clock time)
         driver.advanceWallClockTime(TimeUnit.MINUTES.toMillis(6));
 
         inputNewMessage(TopicName.INCOMING_MAILS, "jeppe@example.com", "Message");
