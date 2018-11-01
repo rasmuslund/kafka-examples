@@ -1,11 +1,15 @@
 package dk.ralu.examples.kafka;
 
+import java.time.Duration;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,22 +43,33 @@ public class Reader {
 
             String topic = "test";
             List<String> topicList = Collections.singletonList(topic);
-            kafkaConsumer.subscribe(topicList);
+            kafkaConsumer.subscribe(topicList, new ConsumerRebalanceListener() {
+                @Override
+                public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+                    LOGGER.info("Rebalance: Lost partitions {}", partitions);
+                }
+
+                @Override
+                public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                    LOGGER.info("Rebalance: Got partitions {}", partitions);
+                }
+            });
             LOGGER.info("Subscribed to topics {}", topicList);
 
             kafkaConsumerWrapper.logCurrentBeginningAndEndOffsetsForTopicPartitions(topic);
 
-            boolean isFirstLoop = true;
             while (true) {
                 // controls how long poll() will block if data is not available in the consumer buffer
                 int timeout = 100;
-                ConsumerRecords<String, String> records = kafkaConsumer.poll(timeout);
+                ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(timeout));
+/*
                 if (isFirstLoop) {
                     // Seek must be called after first poll, as first poll is what assigns us some partitions in the consumer group
                     kafkaConsumer.seekToBeginning(kafkaConsumerWrapper.getTopicPartitions(topic));
                     isFirstLoop = false;
                     continue;
                 }
+*/
                 for (ConsumerRecord<String, String> record : records) {
                     LOGGER.info("Read record with key [{}], value [{}], and headers {} from topic {}, partition {}, and offset {}",
                                 record.key(), record.value(), record.headers(), record.topic(), record.partition(), record.offset());

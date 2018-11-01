@@ -29,7 +29,7 @@ public class Writer {
             LOGGER.info("Created producer with config {}", kafkaProps);
 
             String topic = "test";
-            Integer partition = 0;
+            Integer partition = null; // Use default partitioner
             String key = RandomStringUtil.randomString(4, 'a', 'z');
             String value = RandomStringUtil.randomString(10, 'a', 'z');
             //List<Header> headers = Arrays.asList(new RecordHeader("h1", "h1-value".getBytes("UTF-8")));
@@ -39,10 +39,8 @@ public class Writer {
             Future<RecordMetadata> sendResponseFuture = kafkaProducer.send(record);
             LOGGER.info("Sending message with key [{}}, and value [{}] to topic [{}], partition [{}]", key, value, topic, partition);
 
-            LOGGER.info("Message successfully sent (offset {})", sendResponseFuture.get().offset());
-
-            List<PartitionInfo> partitionInfoList = kafkaProducer.partitionsFor("test");
-            LOGGER.info("Partitions on topic test is {}", partitionInfoList);
+            RecordMetadata recordMetadata = sendResponseFuture.get();
+            LOGGER.info("Message successfully sent (topic:partition:offset {}:{}:{})", topic, recordMetadata.partition(), recordMetadata.offset());
         }
     }
 }
