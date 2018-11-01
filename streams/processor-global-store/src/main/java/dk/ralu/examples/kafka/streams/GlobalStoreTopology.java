@@ -1,14 +1,17 @@
 package dk.ralu.examples.kafka.streams;
 
-import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Name.NodeName;
-import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Name.StoreName;
-import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Name.TopicName;
+import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Constant.CustomSerde;
+import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Constant.NodeName;
+import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Constant.StoreName;
+import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Constant.TopicName;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.state.Stores;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("unchecked")
 class GlobalStoreTopology {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalStoreTopology.class);
@@ -17,24 +20,25 @@ class GlobalStoreTopology {
 
         Topology topology = new Topology()
 
-                .addSource(
-                        NodeName.SOURCE_FROM_MAILS,
-                        Serdes.String().deserializer(), Serdes.String().deserializer(),
-                        TopicName.MAILS
-                )
-
                 .addGlobalStore(
                         Stores.keyValueStoreBuilder(
                                 Stores.persistentKeyValueStore(StoreName.USERS_GLOBAL_STORE),
-                                Serdes.String(),
-                                Serdes.String()
+                                CustomSerde.MAIL_ADDRESS,
+                                CustomSerde.USER_FULL_NAME
                         ).withLoggingDisabled(),
                         NodeName.SOURCE_FROM_USERS,
-                        Serdes.String().deserializer(),
-                        Serdes.String().deserializer(),
+                        CustomSerde.MAIL_ADDRESS.deserializer(),
+                        CustomSerde.USER_FULL_NAME.deserializer(),
                         TopicName.USERS,
                         NodeName.PROCESSOR_USERS_GLOBAL_STORE_UPDATER,
                         UsersGlobalStoreUpdater::new
+                )
+
+                .addSource(
+                        NodeName.SOURCE_FROM_MAILS,
+                        CustomSerde.MAIL_ADDRESS.deserializer(),
+                        CustomSerde.ORIGINAL_MESSAGE.deserializer(),
+                        TopicName.MAILS
                 )
 
                 .addProcessor(
@@ -49,8 +53,8 @@ class GlobalStoreTopology {
                 .addSink(
                         NodeName.SINK_TO_ENRICHED_MAILS,
                         TopicName.ENRICHED_MAILS,
-                        Serdes.String().serializer(),
-                        Serdes.String().serializer(),
+                        CustomSerde.MAIL_ADDRESS.serializer(),
+                        CustomSerde.ENRICHED_MESSAGE.serializer(),
                         NodeName.PROCESSOR_JOIN_MAILS_AND_USERS);
 
         LOGGER.info(topology.describe().toString());
@@ -59,7 +63,7 @@ class GlobalStoreTopology {
         return topology;
     }
 
-    static class Name {
+    static class Constant {
 
         static class NodeName {
 
@@ -80,6 +84,14 @@ class GlobalStoreTopology {
             static final String USERS = "users";
             static final String MAILS = "mails";
             static final String ENRICHED_MAILS = "enriched-mails";
+        }
+
+        static class CustomSerde {
+
+            static final Serde MAIL_ADDRESS = Serdes.String();
+            static final Serde USER_FULL_NAME = Serdes.String();
+            static final Serde ORIGINAL_MESSAGE = Serdes.String();
+            static final Serde ENRICHED_MESSAGE = Serdes.String();
         }
     }
 }

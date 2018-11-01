@@ -1,7 +1,7 @@
 package dk.ralu.examples.kafka.streams;
 
-import dk.ralu.examples.kafka.streams.BasicProcessorTopology.Name.NodeName;
-import dk.ralu.examples.kafka.streams.BasicProcessorTopology.Name.TopicName;
+import dk.ralu.examples.kafka.streams.BasicProcessorTopology.Constant.NodeName;
+import dk.ralu.examples.kafka.streams.BasicProcessorTopology.Constant.TopicName;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.Topology;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ class BasicProcessorTopology {
         return topology;
     }
 
-    static class Name {
+    static class Constant {
 
         static class NodeName {
 
@@ -66,10 +66,6 @@ class BasicProcessorTopology {
             static final String PROCESSOR_BRANCH = "branch";
             static final String PROCESSOR_VALUE_MODIFIER = "value-modifier";
             static final String SINK_TO_X = "to-" + TopicName.X;
-        }
-
-        static class StoreName {
-
         }
 
         static class TopicName {

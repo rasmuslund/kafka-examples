@@ -1,6 +1,6 @@
 package dk.ralu.examples.kafka.streams;
 
-import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Name.StoreName;
+import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Constant.StoreName;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
