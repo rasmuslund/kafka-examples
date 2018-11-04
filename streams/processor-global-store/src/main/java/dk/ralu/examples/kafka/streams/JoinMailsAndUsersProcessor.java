@@ -4,8 +4,12 @@ import dk.ralu.examples.kafka.streams.GlobalStoreTopology.Constant.StoreName;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class JoinMailsAndUsersProcessor implements Processor<String, String> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JoinMailsAndUsersProcessor.class);
 
     private KeyValueStore<String, String> usersGlobalStore;
     private ProcessorContext context;
@@ -19,8 +23,9 @@ class JoinMailsAndUsersProcessor implements Processor<String, String> {
 
     @Override
     public void process(String mail, String message) {
-        String userName = usersGlobalStore.get(mail);
-        String messageAndUserName = message + " from " + userName;
+        String userFullName = usersGlobalStore.get(mail);
+        String messageAndUserName = message + " from " + userFullName;
+        LOGGER.info("Joined record with global store {}:{}", mail, messageAndUserName);
         context.forward(mail, messageAndUserName);
     }
 
